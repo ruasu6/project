@@ -37,7 +37,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.example.project.ui.theme.ProjectTheme
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsWithImePadding
 
@@ -98,6 +101,7 @@ fun Chatting() {
         Row(modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
             androidx.compose.material3.TextField(
                 value = message, onValueChange = { message = it },
+//                label = { Text(text = "") },
                 placeholder = { Text(text = "輸入文字..", color = Color.Gray) },
                 shape = RoundedCornerShape(50.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -119,7 +123,7 @@ fun Chatting() {
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Transparent,
-                            contentColor = (Color(0xFFD5BFA0))
+                            contentColor = (ThemeColor)
                         )
                     ) {
                         Icon(
@@ -156,7 +160,7 @@ fun MessageItem(message: String, isSentByUser: Boolean) {
             modifier = Modifier
                 .background(
 //                    e5dfd4
-                    color = if (isSentByUser) Color(0xFFD5BFA0) else Color(0xFFE9E8E5),
+                    color = if (isSentByUser) ThemeColor else LightColor,
                     shape = RoundedCornerShape(30.dp)
                 )
                 .padding(8.dp)
@@ -174,5 +178,14 @@ fun MessageItem(message: String, isSentByUser: Boolean) {
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ChattingPreview() {
+    val navController = rememberNavController()
+    ProjectTheme {
+        Chatting()
     }
 }
