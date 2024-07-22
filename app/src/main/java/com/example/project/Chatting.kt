@@ -68,7 +68,7 @@ fun Chatting() {
     // 使用 LaunchedEffect 来监控消息列表的变化
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {
-            listState.animateScrollToItem(messages.size - 1)
+            listState.animateScrollToItem(messages.size)
         }
     }
 
