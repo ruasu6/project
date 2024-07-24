@@ -18,7 +18,7 @@ import com.example.project.ui.theme.ProjectTheme
 val ThemeColor = Color(213, 191, 160)//0xFFD5BFA0
 val LightColor = ThemeColor.copy(alpha = 0.2f) //原0xFFE9E8E5
 
-//加一行註解測試用
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
