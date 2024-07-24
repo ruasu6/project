@@ -23,6 +23,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,8 +42,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.project.ui.theme.ProjectTheme
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.navigationBarsWithImePadding
+//import com.google.accompanist.insets.LocalWindowInsets
+//import com.google.accompanist.insets.navigationBarsWithImePadding
 
 data class Message(val text: String, val isSentByUser: Boolean)
 
@@ -63,7 +64,7 @@ fun Chatting() {
                 "\n" +
                 "自出道以來，NCT在全球範圍內取得了不俗的成績，獲得了眾多音樂獎項和廣泛的粉絲支持。他們不斷挑戰和創新，通過音樂和舞蹈表現出色的實力和獨特的魅力，成為當今K-pop界的重要代表之一。", true)
     ) }
-    val insets = LocalWindowInsets.current
+//    val insets = LocalWindowInsets.current
     val listState = rememberLazyListState()
     // 使用 LaunchedEffect 来监控消息列表的变化
     LaunchedEffect(messages.size) {
@@ -76,7 +77,7 @@ fun Chatting() {
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(android.graphics.Color.parseColor("#f2f1f6")))
-            .navigationBarsWithImePadding()
+//            .navigationBarsWithImePadding()
             .systemBarsPadding()
     ) {
 
@@ -99,7 +100,7 @@ fun Chatting() {
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
-            androidx.compose.material3.TextField(
+            TextField(
                 value = message, onValueChange = { message = it },
 //                label = { Text(text = "") },
                 placeholder = { Text(text = "輸入文字..", color = Color.Gray) },
