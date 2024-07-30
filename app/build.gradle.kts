@@ -1,6 +1,7 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("io.realm.kotlin") version "1.16.0"
 }
 
 android {
@@ -9,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.project"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -59,7 +60,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,11 +67,16 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation("androidx.compose.material:material:1.7.0-beta04")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation ("com.google.accompanist:accompanist-insets:0.23.1")
-    implementation ("androidx.compose.ui:ui:1.2.0")
-
-
+//    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
+    implementation (libs.ui)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.navigation.compose)
+    implementation (libs.accompanist.insets)
+    //以下是蔡宜樺加的
+    implementation(libs.library.base)
+    // If using Device Sync
+    implementation (libs.library.sync)
+    // If using coroutines with the SDK
+    implementation (libs.kotlinx.coroutines.core)
 }

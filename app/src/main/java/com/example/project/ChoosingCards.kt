@@ -18,6 +18,7 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,8 +29,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import com.example.project.ui.theme.ProjectTheme
 
 @Composable
 fun ChoosingCards() {
@@ -77,7 +81,7 @@ fun ChoosingCards() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(color = Color(0xFFD5BFA0))
+                        .background(color = ThemeColor)
 //                        .background(color = Color(android.graphics.Color.parseColor("#e7dece")))
                         .padding(all = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -133,4 +137,18 @@ fun ChoosingCards() {
         )
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ChoosingCardsPreview() {
+    val navController = rememberNavController()
+    ProjectTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = androidx.compose.material3.MaterialTheme.colorScheme.background
+        ) {
+            ChoosingCards()
+        }
+    }
 }
