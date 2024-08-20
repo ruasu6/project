@@ -26,6 +26,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.project.ui.theme.ProjectTheme
+import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
+import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
+import com.patrykandpatrick.vico.compose.chart.Chart
+import com.patrykandpatrick.vico.compose.chart.line.lineChart
+import com.patrykandpatrick.vico.core.entry.entryModelOf
 
 @Composable
 fun RecordScreen(navController: NavController) {
@@ -111,18 +116,25 @@ fun EmotionChart() {
             fontSize = 20.sp)
         Spacer(modifier = Modifier.height(8.dp))
         // 這裡可以放置一個圖表，這裡簡單用一個Box表示
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .background(Color.LightGray, RoundedCornerShape(8.dp))
-        ) {
-            // 模擬的圖表
-            Text(
-                text = "這裡應該是一個圖表",
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(200.dp)
+//                .background(Color.LightGray, RoundedCornerShape(8.dp))
+//        ) {
+//            // 模擬的圖表
+//            Text(
+//                text = "這裡應該是一個圖表",
+//                modifier = Modifier.align(Alignment.Center)
+//            )
+//        }
+        val chartEntryModel = entryModelOf(4f, 12f, 8f, 16f)
+        Chart(
+            chart = lineChart(),
+            model = chartEntryModel,
+            startAxis = rememberStartAxis(),
+            bottomAxis = rememberBottomAxis(),
+        )
     }
 }
 

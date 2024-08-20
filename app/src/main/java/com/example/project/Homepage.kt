@@ -161,16 +161,19 @@ fun Home(navController: NavController) {
                             contentColor = Color.White // 设置按钮内容的颜色（图标颜色）
                         ),
                         modifier = Modifier
-                            .size(60.dp)
+                            .size(80.dp)
                     ) {
-                        Icon(
-                            bitmap = ImageBitmap.imageResource(id = R.drawable.diary),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(36.dp)
+                        Column {
+                            Icon(
+                                bitmap = ImageBitmap.imageResource(id = R.drawable.diary),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(36.dp)
 
-//                        .align(Alignment.BottomStart)
-                        )
+                            )
+                            Text(text = "日記")
+                        }
+
                     }
                     FilledIconButton(
                         onClick = { navController.navigate("owningCards") },
@@ -179,14 +182,18 @@ fun Home(navController: NavController) {
                             contentColor = Color.White // 设置按钮内容的颜色（图标颜色）
                         ),
                         modifier = Modifier
-                            .size(60.dp)
+                            .size(80.dp)
                     ) {
-                        Icon(
-                            bitmap = ImageBitmap.imageResource(id = R.drawable.imagegallery),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(36.dp)
-                        )
+                        Column {
+                            Icon(
+                                bitmap = ImageBitmap.imageResource(id = R.drawable.imagegallery),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(36.dp)
+                            )
+                            Text(text = "卡牌")
+                        }
+
 
                     }
                 }
