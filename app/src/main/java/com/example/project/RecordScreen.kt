@@ -115,19 +115,6 @@ fun EmotionChart() {
             modifier = Modifier.align(Alignment.CenterHorizontally),
             fontSize = 20.sp)
         Spacer(modifier = Modifier.height(8.dp))
-        // 這裡可以放置一個圖表，這裡簡單用一個Box表示
-//        Box(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(200.dp)
-//                .background(Color.LightGray, RoundedCornerShape(8.dp))
-//        ) {
-//            // 模擬的圖表
-//            Text(
-//                text = "這裡應該是一個圖表",
-//                modifier = Modifier.align(Alignment.Center)
-//            )
-//        }
         val chartEntryModel = entryModelOf(4f, 12f, 8f, 16f)
         Chart(
             chart = lineChart(),
