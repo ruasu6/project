@@ -65,7 +65,7 @@ fun DrawerContent() {
         // icons to mimic drawer destinations
         val items = listOf(Icons.Default.Notifications, Icons.Default.Face, Icons.Default.Email)
 
-        val names = listOf("通知", "頭貼", "")
+        val names = listOf("金道英", "頭貼", "")
         val selectedItem = remember { mutableStateOf(items[0]) }
         Spacer(Modifier.height(50.dp))
         items.zip(names).forEach { (item, name) ->

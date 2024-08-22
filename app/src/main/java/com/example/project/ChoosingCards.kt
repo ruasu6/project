@@ -30,9 +30,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun ChoosingCards() {
+fun ChoosingCards(navController: NavController) {
     var showDialog by remember { mutableStateOf(false) }
     var selectedCard by remember { mutableStateOf(-1) }
 
@@ -103,11 +104,12 @@ fun ChoosingCards() {
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Button(
-                            onClick = { showDialog = false /* 確認邏輯處理 */ },
+                            onClick = { showDialog = false
+                                        navController.navigate("chatting")},
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(android.graphics.Color.parseColor("#e7dece")),
+                                containerColor = Color(0xFFE9E8E5),
 //                                containerColor = Color(0xFFD5BFA0),
-                                contentColor = Color.White
+                                contentColor = Color.Black
                             ),
                             modifier = Modifier
 //                                .fillMaxWidth(0.3f)
@@ -118,9 +120,9 @@ fun ChoosingCards() {
                         Button(
                             onClick = { showDialog = false },
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(android.graphics.Color.parseColor("#e7dece")),
+                                containerColor = Color(0xFFE9E8E5),
 //                                containerColor = Color(0xFFD5BFA0),
-                                contentColor = Color.White
+                                contentColor = Color.Black
                             ),
                             modifier = Modifier
 //                                .fillMaxWidth(0.3f)

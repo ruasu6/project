@@ -41,10 +41,9 @@ fun MyApp() {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") { Home(navController) }
         composable("mode") { ChoosingMode(navController) }
-        composable("cards") { ChoosingCards() }
+        composable("cards") { ChoosingCards(navController) }
         composable("owningCards") { OwningCards() }
-        composable("chatting") { Chatting() }
-//
+        composable("chatting") { Chatting(navController) }
         composable("month") { MonthScreen(navController) }
         composable("search") { SearchScreen(navController) }
         composable("MonthSelection") { MonthSelectionScreen(navController) }

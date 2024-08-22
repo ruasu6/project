@@ -12,15 +12,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,30 +36,40 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.project.ui.theme.ProjectTheme
-//import com.google.accompanist.insets.LocalWindowInsets
-//import com.google.accompanist.insets.navigationBarsWithImePadding
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.navigationBarsWithImePadding
 
 data class Message(val text: String, val isSentByUser: Boolean)
+val BtnColor = Color(213, 191, 160)//0xFFD5BFA0
+
 
 @Composable
-fun Chatting() {
+fun Chatting(navController: NavController) {
     var message by remember { mutableStateOf("") }
     val messages = remember { mutableStateListOf(
         Message("這是預設在左邊的訊息1", false),
         Message("這是預設在左邊的訊息2", false),
         Message("這是預設在左邊的訊息3", false),
-        Message("這是預設在左邊的訊息3", true),
+        Message("這是預設在左邊的訊息4", true),
         Message("李馬克，黃仁俊，李帝努，李楷燦，羅渽民，鍾辰樂，朴志晟", false),
         Message("NCT（Neo Culture Technology）是韓國SM娛樂於2016年推出的一個男子音樂組合，名稱寓意為“新文化技術”，代表著開放式的成員變動和全球化概念。NCT的獨特之處在於其多元化的分隊模式，根據不同的音樂風格和市場需求，分成多個小分隊進行活動。\n" +
                 "\n" +
@@ -64,12 +79,31 @@ fun Chatting() {
                 "\n" +
                 "自出道以來，NCT在全球範圍內取得了不俗的成績，獲得了眾多音樂獎項和廣泛的粉絲支持。他們不斷挑戰和創新，通過音樂和舞蹈表現出色的實力和獨特的魅力，成為當今K-pop界的重要代表之一。", true)
     ) }
-//    val insets = LocalWindowInsets.current
+
+    // 计时器相关的状态
+    var timeSpent by remember { mutableStateOf(0L) }
+    var timerRunning by remember { mutableStateOf(true) }
+
+//    記錄彈出視窗
+    var showDialog by remember { mutableStateOf(false) }
+
+
+    // 使用 LaunchedEffect 來啟動計時器
+    LaunchedEffect(timerRunning) {
+        while (timerRunning) {
+            kotlinx.coroutines.delay(1000L)
+            timeSpent += 1
+        }
+    }
+
+    val minutes = timeSpent / 60
+    val seconds = timeSpent % 60
+    val timeDisplay = String.format("%02d:%02d", minutes, seconds)
+
     val listState = rememberLazyListState()
-    // 使用 LaunchedEffect 来监控消息列表的变化
     LaunchedEffect(messages.size) {
         if (messages.isNotEmpty()) {
-            listState.animateScrollToItem(messages.size - 1)
+            listState.animateScrollToItem(messages.size )
         }
     }
 
@@ -77,11 +111,47 @@ fun Chatting() {
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color(android.graphics.Color.parseColor("#f2f1f6")))
-//            .navigationBarsWithImePadding()
+            .navigationBarsWithImePadding()
             .systemBarsPadding()
     ) {
 
         Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp)
+        ) {
+            IconButton(onClick = { navController.navigate("home") }) {
+                Icon(
+                    bitmap = ImageBitmap.imageResource(id = R.drawable.back),
+                    contentDescription = null,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
+//            Spacer(modifier = Modifier.weight(1f))
+
+            // 显示计时器的时间
+            Text(text = "$timeDisplay", fontSize = 18.sp, color = Color.Black)
+
+//            Spacer(modifier = Modifier.width(10.dp))
+
+            // 这里添加一个按钮来停止计时器
+            Button(
+                onClick = { timerRunning = false
+                            showDialog = true},
+                colors = ButtonDefaults.buttonColors(containerColor = BtnColor),
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .width(80.dp) // 设置按钮宽度为 120dp，你可以根据需要调整这个值
+            ) {
+                Text(text = "結束對話", color = Color.White)
+            }
+
+
+
+        }
 
         LazyColumn(
             state = listState,
@@ -92,17 +162,14 @@ fun Chatting() {
         ) {
             items(messages) { msg ->
                 MessageItem(message = msg.text, isSentByUser = msg.isSentByUser)
-
-
             }
-
         }
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(modifier = Modifier.padding(start = 10.dp, end = 10.dp, bottom = 10.dp)) {
             TextField(
-                value = message, onValueChange = { message = it },
-//                label = { Text(text = "") },
+                value = message,
+                onValueChange = { message = it },
                 placeholder = { Text(text = "輸入文字..", color = Color.Gray) },
                 shape = RoundedCornerShape(50.dp),
                 colors = OutlinedTextFieldDefaults.colors(
@@ -130,8 +197,7 @@ fun Chatting() {
                         Icon(
                             painter = painterResource(id = R.drawable.send),
                             contentDescription = null,
-                            modifier = Modifier
-                                .size(30.dp)
+                            modifier = Modifier.size(30.dp)
                         )
                     }
                 },
@@ -139,12 +205,68 @@ fun Chatting() {
                     .fillMaxWidth()
                     .shadow(3.dp, shape = RoundedCornerShape(50.dp))
                     .background(Color.White, CircleShape)
-
             )
-
         }
-    }
 
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                buttons = {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color = Color(0xFFD5BFA0))
+//                        .background(color = Color(android.graphics.Color.parseColor("#e7dece")))
+                            .padding(all = 12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+
+                        ) {
+                        Text(
+                            text = "對話已結束，是否查看本次記錄？",
+                            style = MaterialTheme.typography.h6,
+                            modifier = Modifier.padding(bottom = 16.dp),
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White,
+                            fontSize = 16.sp
+                        )
+
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Button(
+                                onClick = { showDialog = false
+                                    navController.navigate("Record")},
+                                colors = ButtonDefaults.buttonColors(
+//                                    containerColor = LightColor,
+                                containerColor = Color(0xFFE9E8E5),
+                                    contentColor = Color.Black
+                                ),
+                                modifier = Modifier
+//                                .fillMaxWidth(0.3f)
+                            ) {
+                                Text("是", fontWeight = FontWeight.Bold)
+                            }
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Button(
+                                onClick = { showDialog = false
+                                    navController.navigate("home")},
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFE9E8E5),
+                                    contentColor = Color.Black
+                                ),
+                                modifier = Modifier
+//                                .fillMaxWidth(0.3f)
+                            ) {
+                                Text("否", fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                }
+            )
+        }
+
+    }
 }
 
 
@@ -187,6 +309,6 @@ fun MessageItem(message: String, isSentByUser: Boolean) {
 fun ChattingPreview() {
     val navController = rememberNavController()
     ProjectTheme {
-        Chatting()
+        Chatting(navController = navController)
     }
 }

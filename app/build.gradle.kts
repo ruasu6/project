@@ -45,6 +45,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
 }
@@ -81,15 +82,13 @@ dependencies {
 
 
 
-    implementation ("com.kennycason:kumo-core:1.27")
-    implementation ("com.kennycason:kumo-tokenizers:1.27")
-
     // For Jetpack Compose.
     implementation("com.patrykandpatrick.vico:compose:1.15.0")
     // For `compose`. Creates a `ChartStyle` based on an M3 Material Theme.
     implementation("com.patrykandpatrick.vico:compose-m3:1.15.0")
     // Houses the core logic for charts and other elements. Included in all other modules.
     implementation("com.patrykandpatrick.vico:core:1.15.0")
+
 
 
 
