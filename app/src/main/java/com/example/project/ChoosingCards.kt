@@ -1,17 +1,9 @@
 package com.example.project
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.AlertDialog
@@ -19,14 +11,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,6 +25,25 @@ import androidx.navigation.NavController
 fun ChoosingCards(navController: NavController) {
     var showDialog by remember { mutableStateOf(false) }
     var selectedCard by remember { mutableStateOf(-1) }
+
+    // Step 1: Create an array with photo file names and IDs
+    val photos = remember {
+        listOf(
+            "photo1" to R.drawable.dy1,  // Replace with your actual drawable IDs
+            "photo2" to R.drawable.dy2,
+            "photo3" to R.drawable.dy3,
+            "photo4" to R.drawable.dy4,
+            "photo5" to R.drawable.dy5,
+            "photo6" to R.drawable.dy6,
+            "photo7" to R.drawable.hc1,
+            "photo8" to R.drawable.hc2,
+            "photo9" to R.drawable.hc3
+        ).shuffled()  // Step 2: Shuffle to randomize the order
+    }
+
+    // Track which cards have been revealed
+    val revealedCards = remember { mutableStateListOf<Boolean>().apply { repeat(photos.size) { add(false) } } }
+
 
     Column(
         modifier = Modifier
@@ -49,29 +57,45 @@ fun ChoosingCards(navController: NavController) {
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
-            modifier = Modifier
-                .padding(top = 16.dp)
-
+            modifier = Modifier.padding(top = 16.dp)
         ) {
-            items(12) { index ->
+            items(photos.size) { index ->
+                val (fileName, drawableId) = photos[index]
+
                 Box(
                     modifier = Modifier
-//                        .size(100.dp)
-//                        .height(100.dp)
-//                        .width(50.dp)
                         .aspectRatio(3 / 4f)
                         .padding(8.dp)
                         .background(Color.Gray)
                         .clickable {
+                            if (!revealedCards[index]) {
+                                revealedCards[index] = true
+                            }
                             selectedCard = index
                             showDialog = true
                         }
-                )
+                ) {
+                    if (revealedCards[index]) {
+                        Image(
+                            painter = painterResource(id = drawableId),
+                            contentDescription = fileName,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.Black)
+                        )
+                    }
+                }
             }
         }
     }
 
     if (showDialog) {
+        val (selectedFileName, selectedDrawableId) = photos[selectedCard]
+
         AlertDialog(
             onDismissRequest = { showDialog = false },
             buttons = {
@@ -79,11 +103,17 @@ fun ChoosingCards(navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(color = Color(0xFFD5BFA0))
-//                        .background(color = Color(android.graphics.Color.parseColor("#e7dece")))
                         .padding(all = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-
-                    ) {
+                ) {
+                    Image(
+                        painter = painterResource(id = selectedDrawableId),
+                        contentDescription = selectedFileName,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(3 / 4f)
+                            .padding(bottom = 16.dp)
+                    )
                     Text(
                         text = "是否確定要抽取這張卡片？",
                         style = MaterialTheme.typography.h6,
@@ -91,41 +121,34 @@ fun ChoosingCards(navController: NavController) {
                         fontWeight = FontWeight.SemiBold,
                         color = Color.White
                     )
-                    Text(
-                        text = "選擇卡片 $selectedCard",
-                        style = MaterialTheme.typography.body1,
-                        modifier = Modifier.padding(bottom = 16.dp),
-                        color = Color.White,
-                        fontWeight = FontWeight.SemiBold
-                    )
 
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Button(
-                            onClick = { showDialog = false
-                                        navController.navigate("chatting")},
+                            onClick = {
+                                showDialog = false
+                                navController.navigate("chatting")
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFE9E8E5),
-//                                containerColor = Color(0xFFD5BFA0),
                                 contentColor = Color.Black
                             ),
-                            modifier = Modifier
-//                                .fillMaxWidth(0.3f)
                         ) {
                             Text("是", fontWeight = FontWeight.Bold)
                         }
                         Spacer(modifier = Modifier.width(10.dp))
                         Button(
-                            onClick = { showDialog = false },
+                            onClick = {
+                                // Reset the card to black if "否" is chosen
+                                revealedCards[selectedCard] = false
+                                showDialog = false
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color(0xFFE9E8E5),
-//                                containerColor = Color(0xFFD5BFA0),
                                 contentColor = Color.Black
                             ),
-                            modifier = Modifier
-//                                .fillMaxWidth(0.3f)
                         ) {
                             Text("否", fontWeight = FontWeight.Bold)
                         }
@@ -134,5 +157,4 @@ fun ChoosingCards(navController: NavController) {
             }
         )
     }
-
 }
